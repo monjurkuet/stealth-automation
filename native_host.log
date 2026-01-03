@@ -1,0 +1,185 @@
+2026-01-03 09:58:50,461 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 09:58:50,461 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 09:58:51,933 - INFO - Stdin closed, exiting read loop.
+2026-01-03 09:58:52,078 - DEBUG - Using selector: EpollSelector
+2026-01-03 09:58:52,079 - INFO - Native Host Started
+2026-01-03 09:58:52,081 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 09:58:52,081 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 09:59:17,941 - INFO - Received external command: search:Best stealth automation tools
+2026-01-03 09:59:18,020 - INFO - Received trigger: start_search
+2026-01-03 09:59:18,020 - INFO - Starting DuckDuckGo Search for: Best stealth automation tools
+2026-01-03 09:59:18,021 - INFO - Sent command 1: navigate
+2026-01-03 09:59:18,025 - DEBUG - Received message: {'id': 1, 'status': 'success', 'message': 'Navigation initiated'}
+2026-01-03 09:59:18,121 - INFO - Retrieved result for command 1
+2026-01-03 09:59:21,123 - INFO - Sent command 2: type
+2026-01-03 09:59:21,127 - DEBUG - Received message: {'id': 2, 'status': 'success', 'message': 'Typed and submitted'}
+2026-01-03 09:59:21,223 - INFO - Retrieved result for command 2
+2026-01-03 09:59:23,225 - INFO - Sent command 3: wait_for_selector
+2026-01-03 09:59:23,228 - DEBUG - Received message: {'id': 3, 'status': 'success', 'message': 'Element "ol.react-results--main" appeared.'}
+2026-01-03 09:59:23,325 - INFO - Retrieved result for command 3
+2026-01-03 09:59:25,328 - INFO - Sent command 4: extract_search_results
+2026-01-03 09:59:25,333 - DEBUG - Received message: {'id': 4, 'status': 'success', 'data': [{'rank': 1, 'title': 'Top 7 Browser Automation Tools in 2026 - brightdata.com', 'link': 'https://brightdata.com/blog/web-data/best-browser-automation-tools', 'details': "Discover seven leading solutions for dynamic web scraping, testing, and automation to stay ahead in 2026's evolving browser automation landscape at scale."}, {'rank': 2, 'title': 'The Best Headless Chrome Browser for Bypassing Anti-Bot Systems', 'link': 'https://kameleo.io/blog/the-best-headless-chrome-browser-for-bypassing-anti-bot-systems', 'details': 'In the end of the article you can see the code we used to test the different automation tools: Playwright, Puppeteer Stealth, Undetected ChromeDriver, and Kameleo. 1. bot.sannysoft.com Bot.Sannysoft.com is a widely used anti-bot system that analyzes multiple attributes, such as browser options, JavaScript execution, and rendering behaviors, to detect automated browsing. It is capable of ...'}, {'rank': 3, 'title': 'Top 8 Browser Automation Tools Compared | StealthBrowser', 'link': 'https://www.stealthbrowser.cloud/blog/top-8-browser-automation-tools-compared', 'details': 'Nov 16, 2024Explore the top browser automation tools, comparing features, benefits, and ideal use cases to streamline your web testing and scraping efforts.'}, {'rank': 4, 'title': 'What is a Headless Browser: Top 8 Options for 2025 [Pros vs. Cons]', 'link': 'https://www.scrapingbee.com/blog/what-is-a-headless-browser-best-solutions-for-web-scraping-at-scale/', 'details': "Aug 2, 2025Stealth Mode Activated: Discover the world of stealth automation tools for headless browsers. We'll reveal how to stay undetected in a web that's increasingly hostile to automation. From Zero to Hero: Ready to get your hands dirty? We'll walk through setting up your first headless browser project, complete with code snippets and best practices."}, {'rank': 5, 'title': 'Top 9 Browser Automation Tools for Web Testing and Scraping in 2026', 'link': 'https://www.firecrawl.dev/blog/browser-automation-tools-comparison-2025', 'details': 'Comprehensive comparison of the best browser automation frameworks including Selenium, Playwright, Puppeteer, and Cypress for web testing, data extraction, and workflow automation with implementation guides.'}, {'rank': 6, 'title': '6 Best Antidetect Browsers for Anonymous Browsing (2025)', 'link': 'https://multilogin.com/blog/antidetect-browsers-for-anonymous-browsing/', 'details': "Jun 22, 2025And then there are those built for stealth-grade web scraping, fingerprint spoofing, or eCommerce logins from different regions. Below, we've curated the 8 best antidetect browsers for anonymous browsing in 2025 — comparing them by fingerprinting strength, automation tools, proxy support, UI, and affordability. Let's go: 1."}, {'rank': 7, 'title': '23 Best Web Automation Tools Reviewed for 2025 - The QA Lead', 'link': 'https://thectoclub.com/tools/best-web-automation-tools/', 'details': 'Nov 25, 2025Discover the best web automation tools for your team. Compare features, pros + cons, pricing, and more in my complete guide.'}, {'rank': 8, 'title': 'The Top Browser Automation Tools To Try for 2025', 'link': 'https://www.getmagical.com/blog/top-browser-automation-tools', 'details': 'Discover the top browser automation tools of 2025 to boost your productivity and streamline web tasks. Unleash the power of automation today.'}, {'rank': 9, 'title': 'Browser Automation Tools | TheWebScrapingClub/webscraping-from-0-to ...', 'link': 'https://deepwiki.com/TheWebScrapingClub/webscraping-from-0-to-hero/3.2-browser-automation-tools', 'details': "Purpose and Scope This document covers browser automation tools used for web scraping, focusing on solutions that control full browser instances to interact with websites. These tools excel at scraping JavaScript-heavy sites and bypassing anti-bot measures that detect headless environments. We'll explore Python-based options like Playwright and playwright_stealth, as well as the JavaScript ..."}, {'rank': 10, 'title': 'Best Automation Software (2025): Top 10 Tools to Automate Everything', 'link': 'https://automatonarmy.com/best-automation-software/', 'details': 'In this guide, we look at the best automation software to solve all your problems, from automation builders to AI tools to email marketing to social media to communication and more.'}]}
+2026-01-03 09:59:25,429 - INFO - Retrieved result for command 4
+2026-01-03 09:59:25,429 - INFO - Extracted Search Results:
+[
+  {
+    "rank": 1,
+    "title": "Top 7 Browser Automation Tools in 2026 - brightdata.com",
+    "link": "https://brightdata.com/blog/web-data/best-browser-automation-tools",
+    "details": "Discover seven leading solutions for dynamic web scraping, testing, and automation to stay ahead in 2026's evolving browser automation landscape at scale."
+  },
+  {
+    "rank": 2,
+    "title": "The Best Headless Chrome Browser for Bypassing Anti-Bot Systems",
+    "link": "https://kameleo.io/blog/the-best-headless-chrome-browser-for-bypassing-anti-bot-systems",
+    "details": "In the end of the article you can see the code we used to test the different automation tools: Playwright, Puppeteer Stealth, Undetected ChromeDriver, and Kameleo. 1. bot.sannysoft.com Bot.Sannysoft.com is a widely used anti-bot system that analyzes multiple attributes, such as browser options, JavaScript execution, and rendering behaviors, to detect automated browsing. It is capable of ..."
+  },
+  {
+    "rank": 3,
+    "title": "Top 8 Browser Automation Tools Compared | StealthBrowser",
+    "link": "https://www.stealthbrowser.cloud/blog/top-8-browser-automation-tools-compared",
+    "details": "Nov 16, 2024Explore the top browser automation tools, comparing features, benefits, and ideal use cases to streamline your web testing and scraping efforts."
+  },
+  {
+    "rank": 4,
+    "title": "What is a Headless Browser: Top 8 Options for 2025 [Pros vs. Cons]",
+    "link": "https://www.scrapingbee.com/blog/what-is-a-headless-browser-best-solutions-for-web-scraping-at-scale/",
+    "details": "Aug 2, 2025Stealth Mode Activated: Discover the world of stealth automation tools for headless browsers. We'll reveal how to stay undetected in a web that's increasingly hostile to automation. From Zero to Hero: Ready to get your hands dirty? We'll walk through setting up your first headless browser project, complete with code snippets and best practices."
+  },
+  {
+    "rank": 5,
+    "title": "Top 9 Browser Automation Tools for Web Testing and Scraping in 2026",
+    "link": "https://www.firecrawl.dev/blog/browser-automation-tools-comparison-2025",
+    "details": "Comprehensive comparison of the best browser automation frameworks including Selenium, Playwright, Puppeteer, and Cypress for web testing, data extraction, and workflow automation with implementation guides."
+  },
+  {
+    "rank": 6,
+    "title": "6 Best Antidetect Browsers for Anonymous Browsing (2025)",
+    "link": "https://multilogin.com/blog/antidetect-browsers-for-anonymous-browsing/",
+    "details": "Jun 22, 2025And then there are those built for stealth-grade web scraping, fingerprint spoofing, or eCommerce logins from different regions. Below, we've curated the 8 best antidetect browsers for anonymous browsing in 2025 \u2014 comparing them by fingerprinting strength, automation tools, proxy support, UI, and affordability. Let's go: 1."
+  },
+  {
+    "rank": 7,
+    "title": "23 Best Web Automation Tools Reviewed for 2025 - The QA Lead",
+    "link": "https://thectoclub.com/tools/best-web-automation-tools/",
+    "details": "Nov 25, 2025Discover the best web automation tools for your team. Compare features, pros + cons, pricing, and more in my complete guide."
+  },
+  {
+    "rank": 8,
+    "title": "The Top Browser Automation Tools To Try for 2025",
+    "link": "https://www.getmagical.com/blog/top-browser-automation-tools",
+    "details": "Discover the top browser automation tools of 2025 to boost your productivity and streamline web tasks. Unleash the power of automation today."
+  },
+  {
+    "rank": 9,
+    "title": "Browser Automation Tools | TheWebScrapingClub/webscraping-from-0-to ...",
+    "link": "https://deepwiki.com/TheWebScrapingClub/webscraping-from-0-to-hero/3.2-browser-automation-tools",
+    "details": "Purpose and Scope This document covers browser automation tools used for web scraping, focusing on solutions that control full browser instances to interact with websites. These tools excel at scraping JavaScript-heavy sites and bypassing anti-bot measures that detect headless environments. We'll explore Python-based options like Playwright and playwright_stealth, as well as the JavaScript ..."
+  },
+  {
+    "rank": 10,
+    "title": "Best Automation Software (2025): Top 10 Tools to Automate Everything",
+    "link": "https://automatonarmy.com/best-automation-software/",
+    "details": "In this guide, we look at the best automation software to solve all your problems, from automation builders to AI tools to email marketing to social media to communication and more."
+  }
+]
+2026-01-03 09:59:25,429 - INFO - Search task finished.
+2026-01-03 10:14:24,645 - INFO - Stdin closed, exiting read loop.
+2026-01-03 10:14:24,784 - DEBUG - Using selector: EpollSelector
+2026-01-03 10:14:24,784 - INFO - Native Host Started
+2026-01-03 10:14:24,787 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 10:14:24,788 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 10:14:25,336 - INFO - Stdin closed, exiting read loop.
+2026-01-03 10:14:25,477 - DEBUG - Using selector: EpollSelector
+2026-01-03 10:14:25,477 - INFO - Native Host Started
+2026-01-03 10:14:25,479 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 10:14:25,479 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 10:14:26,985 - INFO - Stdin closed, exiting read loop.
+2026-01-03 10:14:27,124 - DEBUG - Using selector: EpollSelector
+2026-01-03 10:14:27,125 - INFO - Native Host Started
+2026-01-03 10:14:27,126 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 10:14:27,126 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 10:14:27,302 - INFO - Stdin closed, exiting read loop.
+2026-01-03 10:14:27,446 - DEBUG - Using selector: EpollSelector
+2026-01-03 10:14:27,447 - INFO - Native Host Started
+2026-01-03 10:14:27,449 - INFO - External Command Server listening on 127.0.0.1:9999
+2026-01-03 10:14:27,450 - INFO - Waiting for triggers from browser or terminal...
+2026-01-03 10:14:36,871 - INFO - Received external command: search:Best stealth automation tools
+2026-01-03 10:14:36,963 - INFO - Received trigger: start_search
+2026-01-03 10:14:36,963 - INFO - Starting DuckDuckGo Search for: Best stealth automation tools
+2026-01-03 10:14:36,963 - INFO - Sent command 1: navigate
+2026-01-03 10:14:36,968 - DEBUG - Received message: {'id': 1, 'status': 'success', 'message': 'Navigation initiated'}
+2026-01-03 10:14:37,063 - INFO - Retrieved result for command 1
+2026-01-03 10:14:40,064 - INFO - Sent command 2: type
+2026-01-03 10:14:40,068 - DEBUG - Received message: {'id': 2, 'status': 'success', 'message': 'Typed and submitted'}
+2026-01-03 10:14:40,164 - INFO - Retrieved result for command 2
+2026-01-03 10:14:42,166 - INFO - Sent command 3: wait_for_selector
+2026-01-03 10:14:42,169 - DEBUG - Received message: {'id': 3, 'status': 'success', 'message': 'Element "ol.react-results--main" appeared.'}
+2026-01-03 10:14:42,266 - INFO - Retrieved result for command 3
+2026-01-03 10:14:44,268 - INFO - Sent command 4: extract_search_results
+2026-01-03 10:14:44,272 - DEBUG - Received message: {'id': 4, 'status': 'success', 'data': [{'rank': 1, 'title': 'Top 7 Browser Automation Tools in 2026 - brightdata.com', 'link': 'https://brightdata.com/blog/web-data/best-browser-automation-tools', 'details': "Discover seven leading solutions for dynamic web scraping, testing, and automation to stay ahead in 2026's evolving browser automation landscape at scale."}, {'rank': 2, 'title': 'The Best Headless Chrome Browser for Bypassing Anti-Bot Systems', 'link': 'https://kameleo.io/blog/the-best-headless-chrome-browser-for-bypassing-anti-bot-systems', 'details': 'In the end of the article you can see the code we used to test the different automation tools: Playwright, Puppeteer Stealth, Undetected ChromeDriver, and Kameleo. 1. bot.sannysoft.com Bot.Sannysoft.com is a widely used anti-bot system that analyzes multiple attributes, such as browser options, JavaScript execution, and rendering behaviors, to detect automated browsing. It is capable of ...'}, {'rank': 3, 'title': 'Top 8 Browser Automation Tools Compared | StealthBrowser', 'link': 'https://www.stealthbrowser.cloud/blog/top-8-browser-automation-tools-compared', 'details': 'Nov 16, 2024Explore the top browser automation tools, comparing features, benefits, and ideal use cases to streamline your web testing and scraping efforts.'}, {'rank': 4, 'title': 'What is a Headless Browser: Top 8 Options for 2025 [Pros vs. Cons]', 'link': 'https://www.scrapingbee.com/blog/what-is-a-headless-browser-best-solutions-for-web-scraping-at-scale/', 'details': "Aug 2, 2025Stealth Mode Activated: Discover the world of stealth automation tools for headless browsers. We'll reveal how to stay undetected in a web that's increasingly hostile to automation. From Zero to Hero: Ready to get your hands dirty? We'll walk through setting up your first headless browser project, complete with code snippets and best practices."}, {'rank': 5, 'title': 'Top 9 Browser Automation Tools for Web Testing and Scraping in 2026', 'link': 'https://www.firecrawl.dev/blog/browser-automation-tools-comparison-2025', 'details': 'Comprehensive comparison of the best browser automation frameworks including Selenium, Playwright, Puppeteer, and Cypress for web testing, data extraction, and workflow automation with implementation guides.'}, {'rank': 6, 'title': '23 Best Web Automation Tools Reviewed for 2025 - The QA Lead', 'link': 'https://thectoclub.com/tools/best-web-automation-tools/', 'details': 'Nov 25, 2025Discover the best web automation tools for your team. Compare features, pros + cons, pricing, and more in my complete guide.'}, {'rank': 7, 'title': 'GitHub - FoeXploit/FoeXploit-Stealth-Browser: FoeXploit: Stealth ...', 'link': 'https://github.com/FoeXploit/FoeXploit-Stealth-Browser', 'details': "Feb 19, 2025FoeXploit: Stealth Browser is a powerful Python-based automation framework that leverages both Selenium and Playwright to perform browser automation tasks with stealth techniques. Whether you're performing web scraping, automated testing, or simply exploring the web anonymously, this project provides robust proxy support, cookie management, and stealth capabilities to bypass detection."}, {'rank': 8, 'title': 'The Top Browser Automation Tools To Try for 2025', 'link': 'https://www.getmagical.com/blog/top-browser-automation-tools', 'details': 'Discover the top browser automation tools of 2025 to boost your productivity and streamline web tasks. Unleash the power of automation today.'}, {'rank': 9, 'title': 'Best Automation Software (2025): Top 10 Tools to Automate Everything', 'link': 'https://automatonarmy.com/best-automation-software/', 'details': 'In this guide, we look at the best automation software to solve all your problems, from automation builders to AI tools to email marketing to social media to communication and more.'}, {'rank': 10, 'title': 'Browser Automation Tools | TheWebScrapingClub/webscraping-from-0-to ...', 'link': 'https://deepwiki.com/TheWebScrapingClub/webscraping-from-0-to-hero/3.2-browser-automation-tools', 'details': "Purpose and Scope This document covers browser automation tools used for web scraping, focusing on solutions that control full browser instances to interact with websites. These tools excel at scraping JavaScript-heavy sites and bypassing anti-bot measures that detect headless environments. We'll explore Python-based options like Playwright and playwright_stealth, as well as the JavaScript ..."}]}
+2026-01-03 10:14:44,369 - INFO - Retrieved result for command 4
+2026-01-03 10:14:44,369 - INFO - Extracted Search Results:
+[
+  {
+    "rank": 1,
+    "title": "Top 7 Browser Automation Tools in 2026 - brightdata.com",
+    "link": "https://brightdata.com/blog/web-data/best-browser-automation-tools",
+    "details": "Discover seven leading solutions for dynamic web scraping, testing, and automation to stay ahead in 2026's evolving browser automation landscape at scale."
+  },
+  {
+    "rank": 2,
+    "title": "The Best Headless Chrome Browser for Bypassing Anti-Bot Systems",
+    "link": "https://kameleo.io/blog/the-best-headless-chrome-browser-for-bypassing-anti-bot-systems",
+    "details": "In the end of the article you can see the code we used to test the different automation tools: Playwright, Puppeteer Stealth, Undetected ChromeDriver, and Kameleo. 1. bot.sannysoft.com Bot.Sannysoft.com is a widely used anti-bot system that analyzes multiple attributes, such as browser options, JavaScript execution, and rendering behaviors, to detect automated browsing. It is capable of ..."
+  },
+  {
+    "rank": 3,
+    "title": "Top 8 Browser Automation Tools Compared | StealthBrowser",
+    "link": "https://www.stealthbrowser.cloud/blog/top-8-browser-automation-tools-compared",
+    "details": "Nov 16, 2024Explore the top browser automation tools, comparing features, benefits, and ideal use cases to streamline your web testing and scraping efforts."
+  },
+  {
+    "rank": 4,
+    "title": "What is a Headless Browser: Top 8 Options for 2025 [Pros vs. Cons]",
+    "link": "https://www.scrapingbee.com/blog/what-is-a-headless-browser-best-solutions-for-web-scraping-at-scale/",
+    "details": "Aug 2, 2025Stealth Mode Activated: Discover the world of stealth automation tools for headless browsers. We'll reveal how to stay undetected in a web that's increasingly hostile to automation. From Zero to Hero: Ready to get your hands dirty? We'll walk through setting up your first headless browser project, complete with code snippets and best practices."
+  },
+  {
+    "rank": 5,
+    "title": "Top 9 Browser Automation Tools for Web Testing and Scraping in 2026",
+    "link": "https://www.firecrawl.dev/blog/browser-automation-tools-comparison-2025",
+    "details": "Comprehensive comparison of the best browser automation frameworks including Selenium, Playwright, Puppeteer, and Cypress for web testing, data extraction, and workflow automation with implementation guides."
+  },
+  {
+    "rank": 6,
+    "title": "23 Best Web Automation Tools Reviewed for 2025 - The QA Lead",
+    "link": "https://thectoclub.com/tools/best-web-automation-tools/",
+    "details": "Nov 25, 2025Discover the best web automation tools for your team. Compare features, pros + cons, pricing, and more in my complete guide."
+  },
+  {
+    "rank": 7,
+    "title": "GitHub - FoeXploit/FoeXploit-Stealth-Browser: FoeXploit: Stealth ...",
+    "link": "https://github.com/FoeXploit/FoeXploit-Stealth-Browser",
+    "details": "Feb 19, 2025FoeXploit: Stealth Browser is a powerful Python-based automation framework that leverages both Selenium and Playwright to perform browser automation tasks with stealth techniques. Whether you're performing web scraping, automated testing, or simply exploring the web anonymously, this project provides robust proxy support, cookie management, and stealth capabilities to bypass detection."
+  },
+  {
+    "rank": 8,
+    "title": "The Top Browser Automation Tools To Try for 2025",
+    "link": "https://www.getmagical.com/blog/top-browser-automation-tools",
+    "details": "Discover the top browser automation tools of 2025 to boost your productivity and streamline web tasks. Unleash the power of automation today."
+  },
+  {
+    "rank": 9,
+    "title": "Best Automation Software (2025): Top 10 Tools to Automate Everything",
+    "link": "https://automatonarmy.com/best-automation-software/",
+    "details": "In this guide, we look at the best automation software to solve all your problems, from automation builders to AI tools to email marketing to social media to communication and more."
+  },
+  {
+    "rank": 10,
+    "title": "Browser Automation Tools | TheWebScrapingClub/webscraping-from-0-to ...",
+    "link": "https://deepwiki.com/TheWebScrapingClub/webscraping-from-0-to-hero/3.2-browser-automation-tools",
+    "details": "Purpose and Scope This document covers browser automation tools used for web scraping, focusing on solutions that control full browser instances to interact with websites. These tools excel at scraping JavaScript-heavy sites and bypassing anti-bot measures that detect headless environments. We'll explore Python-based options like Playwright and playwright_stealth, as well as the JavaScript ..."
+  }
+]
+2026-01-03 10:14:44,369 - INFO - Search task finished.
