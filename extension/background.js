@@ -20,6 +20,9 @@ function connectToNativeHost() {
     nativePort.onDisconnect.addListener(() => {
         console.log("Stealth Automation: Native host disconnected.", chrome.runtime.lastError);
         nativePort = null;
+        // Attempt to reconnect after a delay, or based on a specific event
+        // This is where you might implement more sophisticated reconnection logic
+        // For now, simply log that it disconnected.
     });
 }
 
@@ -81,5 +84,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-// Initial Connection
+// Initial connection when the service worker starts
 connectToNativeHost();
+
+// Listen for browser startup
+chrome.runtime.onStartup.addListener(() => {
+    console.log("Stealth Automation: Browser starting up, ensuring native host connection.");
+    if (!nativePort) {
+        connectToNativeHost();
+    }
+});
