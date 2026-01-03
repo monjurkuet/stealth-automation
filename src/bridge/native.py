@@ -12,6 +12,8 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 
+logger = logging.getLogger(__name__)
+
 
 class NativeBridge:
     _instance = None
@@ -41,6 +43,16 @@ class NativeBridge:
         self.read_thread = threading.Thread(target=self._read_loop, daemon=True)
         self.read_thread.start()
 
+        # Set up signal handlers for graceful shutdown
+        import signal
+
+        signal.signal(signal.SIGINT, self._signal_handler)
+        signal.signal(signal.SIGTERM, self._signal_handler)
+
+    def _signal_handler(self, signum, frame):
+        logger.info(f"Received signal {signum}, shutting down...")
+        self.shutdown()
+
     def get_incoming_message(self, block=True, timeout=None):
         """Retrieves the next message sent by the browser (not a result)."""
         try:
@@ -52,8 +64,15 @@ class NativeBridge:
         self.current_command_id += 1
         return self.current_command_id
 
+    def is_connection_healthy(self):
+        """Check if the native messaging connection is healthy."""
+        return self.running and not sys.stdin.closed
+
     def send_command(self, command):
         """Sends a command to the Chrome Extension."""
+        if not self.is_connection_healthy():
+            raise ConnectionError("Native messaging connection lost")
+
         command_id = self._get_next_command_id()
         command["id"] = command_id
 
@@ -121,4 +140,12 @@ class NativeBridge:
                 break
 
     def shutdown(self):
+        """Gracefully shutdown the bridge."""
+        logger.info("Shutting down NativeBridge...")
         self.running = False
+
+        # Wait for read thread to finish
+        if self.read_thread and self.read_thread.is_alive():
+            self.read_thread.join(timeout=2)
+
+        logger.info("NativeBridge shutdown complete")

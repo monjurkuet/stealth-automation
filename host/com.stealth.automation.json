@@ -3,7 +3,7 @@
   "description": "Stealth Automation Native Host",
   "path": "/home/administrator/dev/stealth-automation/main_native.py",
   "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://<EXTENSION_ID_GOES_HERE>/"
-  ]
+    "allowed_origins": [
+      "chrome-extension://<EXTENSION_ID_GOES_HERE>/"
+    ]
 }

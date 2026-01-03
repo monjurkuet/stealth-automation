@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["platform", "selectors", "settings"],
+  "properties": {
+    "platform": {
+      "type": "string",
+      "description": "Platform identifier"
+    },
+    "base_url": {
+      "type": "string",
+      "description": "Base URL for the platform (optional)"
+    },
+    "selectors": {
+      "type": "object",
+      "description": "CSS selectors for elements",
+      "required": ["search_input", "results_container"]
+    },
+    "settings": {
+      "type": "object",
+      "required": ["iteration", "rate_limiting", "output"],
+      "properties": {
+        "iteration": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["pagination", "infinite_scroll", "depth"]
+            },
+            "max_pages": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "scroll_delay_ms": {
+              "type": "integer",
+              "minimum": 100
+            },
+            "same_domain_only": {
+              "type": "boolean"
+            }
+          }
+        },
+        "rate_limiting": {
+          "type": "object",
+          "required": ["action_delay_ms"],
+          "properties": {
+            "action_delay_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "page_load_delay_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "scroll_delay_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "randomize_delay": {
+              "type": "boolean"
+            },
+            "max_actions_per_minute": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "output": {
+          "type": "object",
+          "required": ["file"],
+          "properties": {
+            "file": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "login_url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

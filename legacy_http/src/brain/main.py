@@ -68,7 +68,7 @@ class Logic:
             print("Brain: Waiting for search results failed, aborting search.")
             return
         print("Brain: Search results page loaded.")
-        await asyncio.sleep(5) 
+        await asyncio.sleep(5)
         # 4. Extract URLs from the first page
         extract_command_id = self.send_command_to_hands(
             {"action": "extract_urls", "selector": "a.result-title-a"}

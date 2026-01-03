@@ -1,68 +1,104 @@
 import asyncio
+import logging
+from typing import Dict
 from src.bridge.native import NativeBridge
+from src.brain.factory import AutomationFactory
+from src.common.config import OUTPUT_DIR
+
+# Import tasks to register them in the factory
+import src.brain.tasks
+
+logger = logging.getLogger(__name__)
 
 
-class Logic:
+class Orchestrator:
     """
-    Handles the overall logic and decision-making for browser automation tasks.
+    Orchestrates automation tasks.
+    Dispatches to appropriate platform tasks using factory.
     """
 
     def __init__(self, bridge: NativeBridge):
         self.bridge = bridge
+        self.factory = AutomationFactory()
 
-    async def execute_task(self, task_data):
-        print(f"Executing task: {task_data}")
+    async def dispatch(self, message: Dict) -> Dict:
+        """
+        Dispatch a message to appropriate task.
+
+        Args:
+            message: {
+                "action": "start_search" | "start_task",
+                "platform": "duckduckgo" | "google" | "facebook",
+                "query": "search query or URL",
+                ...
+            }
+
+        Returns:
+            Standardized result from task
+        """
+        action = message.get("action")
+        platform = message.get("platform")
+        query = message.get("query")
+
+        if not platform:
+            platform = "duckduckgo"
+            logger.info(f"No platform specified, defaulting to: {platform}")
+
+        if not query:
+            return {"status": "error", "message": "Query is required"}
+
+        try:
+            task = self.factory.create(platform, self.bridge)
+            logger.info(f"Executing {platform} task: {query}")
+
+            # Pass only relevant kwargs, excluding the ones used for orchestration
+            kwargs_for_task = {
+                k: v
+                for k, v in message.items()
+                if k not in ["action", "platform", "query"]
+            }
+            result = await task.execute(query, **kwargs_for_task)
+            logger.info(f"Task completed: {result.get('status')}")
+            return result
+
+        except ValueError as e:
+            logger.error(f"Invalid platform: {e}")
+            return {
+                "status": "error",
+                "error": {"code": "INVALID_PLATFORM", "message": str(e)},
+            }
+        except Exception as e:
+            logger.error(f"Task execution failed: {e}")
+            return {
+                "status": "error",
+                "error": {"code": "EXECUTION_ERROR", "message": str(e)},
+            }
+
+    async def list_platforms(self) -> Dict:
+        """List all available platforms."""
+        platforms = self.factory.list_available()
+        platform_info = {}
+
+        for platform in platforms:
+            try:
+                platform_info[platform] = self.factory.get_platform_info(platform)
+            except:
+                platform_info[platform] = {"error": "Failed to load info"}
+
+        return {"status": "success", "platforms": platform_info}
+
+
+class Logic:
+    """
+    Deprecated: Use Orchestrator instead.
+    Kept for backward compatibility.
+    """
+
+    def __init__(self, bridge: NativeBridge):
+        self.bridge = bridge
+        self.orchestrator = Orchestrator(bridge)
 
     async def search_duckduckgo(self, query: str):
-        """
-        Automates searching on DuckDuckGo using Native Messaging.
-        """
-        # 1. Navigate
-        navigate_id = self.bridge.send_command(
-            {"action": "navigate", "url": "https://duckduckgo.com/"}
-        )
-        result = self.bridge.get_result(navigate_id)
-        if result.get("status") != "success":
-            return
-
-        await asyncio.sleep(3)
-
-        # 2. Type
-        type_id = self.bridge.send_command(
-            {
-                "action": "type",
-                "selector": "input#searchbox_input",
-                "value": query,
-            }
-        )
-        result = self.bridge.get_result(type_id)
-        if result.get("status") != "success":
-            return
-
-        await asyncio.sleep(2)
-
-        # 3. Wait for results
-        wait_id = self.bridge.send_command(
-            {"action": "wait_for_selector", "selector": "ol.react-results--main"}
-        )
-        self.bridge.get_result(wait_id)
-
-        await asyncio.sleep(2)
-
-        # 4. Extract
-        extract_id = self.bridge.send_command({"action": "extract_search_results"})
-        result = self.bridge.get_result(extract_id)
-
-        if result.get("status") == "success":
-            # Since stdout is used for comms, we can't print there easily.
-            # We log to file or stderr
-            import logging
-            import json
-
-            data = result.get("data", [])
-            formatted_json = json.dumps(data, indent=2)
-            logging.info(f"Extracted Search Results:\n{formatted_json}")
-
-            # If we want to save to a file for the user to see easily:
-            with open("search_results.json", "w") as f:
-                f.write(formatted_json)
+        """Backward compatible method."""
+        message = {"action": "start_search", "platform": "duckduckgo", "query": query}
+        return await self.orchestrator.dispatch(message)

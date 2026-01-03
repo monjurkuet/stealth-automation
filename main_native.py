@@ -1,22 +1,61 @@
 #!/usr/bin/env python3
-import sys
-import os
 import asyncio
 import logging
-import threading
+import os
+import signal
+import sys
 
 # Ensure we can import from src
 sys.path.insert(0, os.getcwd())
 
+from src.brain.main import Orchestrator
 from src.bridge.native import NativeBridge
-from src.brain.main import Logic
+from src.common.logging_config import setup_logging
 
-# Setup logging
-logging.basicConfig(
-    filename="native_host.log",
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
+setup_logging()
+logger = logging.getLogger(__name__)
+
+# Process management
+PID_FILE = "/tmp/stealth_automation.pid"
+
+
+def ensure_single_instance():
+    """Ensure only one instance of the native host is running."""
+    try:
+        if os.path.exists(PID_FILE):
+            with open(PID_FILE) as f:
+                old_pid = int(f.read().strip())
+
+            # Check if the process is still running
+            try:
+                os.kill(old_pid, 0)  # Signal 0 checks if process exists
+                logger.warning(f"Instance already running (PID: {old_pid}), exiting")
+                sys.exit(1)
+            except OSError:
+                # Process doesn't exist, clean up PID file
+                os.unlink(PID_FILE)
+    except (FileNotFoundError, ValueError):
+        pass
+
+    # Write current PID
+    with open(PID_FILE, "w") as f:
+        f.write(str(os.getpid()))
+
+
+def cleanup_pid_file():
+    """Clean up PID file on shutdown."""
+    try:
+        if os.path.exists(PID_FILE):
+            os.unlink(PID_FILE)
+    except OSError:
+        pass
+
+
+def signal_handler(signum, frame):
+    """Handle shutdown signals."""
+    logger.info(f"Received signal {signum}, shutting down...")
+    cleanup_pid_file()
+    sys.exit(0)
 
 
 async def handle_external_command(reader, writer):
@@ -24,80 +63,108 @@ async def handle_external_command(reader, writer):
     try:
         data = await reader.read(1024)
         message = data.decode().strip()
-        logging.info(f"Received external command: {message}")
+        logger.info(f"Received external command: {message}")
 
-        # Basic protocol: "search:query"
-        if message.startswith("search:"):
-            query = message.split(":", 1)[1]
-            # We need access to brain_logic here.
-            # A simple pattern is to put this query into a shared queue or event.
-            # For simplicity in this script, we'll store it in a global/shared context
-            # or rely on the main loop to pick it up if we restructure slightly.
-
-            # Better approach: Direct execution if we are careful with concurrency,
-            # or put it in the bridge's incoming_messages queue to be handled by the main loop.
-            from src.bridge.native import NativeBridge
-
-            bridge = NativeBridge()  # It's a singleton
-            bridge.incoming_messages.put({"action": "start_search", "query": query})
-
-            writer.write(b"OK")
+        # Handle both formats: "action:query:platform" and "action:query"
+        if message.count(":") == 2:
+            # Format: "action:query:platform"
+            parts = message.split(":", 2)
+            action = parts[0]
+            query = parts[1]
+            platform = parts[2]
+        elif message.count(":") == 1:
+            # Format: "action:query" (backward compatibility)
+            parts = message.split(":", 1)
+            action = parts[0]
+            query = parts[1]
+            platform = None
         else:
-            writer.write(b"UNKNOWN_COMMAND")
+            writer.write(b"ERROR: Invalid format")
+            return
 
-        await writer.drain()
-        writer.close()
+        logger.info(
+            f"Parsed message - action: {action}, query: {query}, platform: {platform}"
+        )
+
+        logger.info(
+            f"Parsed message - action: {action}, query: {query}, platform: {platform}"
+        )
+
+        msg = {
+            "action": action,
+            "query": query,
+        }
+
+        if platform:
+            msg["platform"] = platform
+
+        bridge = NativeBridge()
+        bridge.incoming_messages.put(msg)
+
+        writer.write(b"OK")
+
     except Exception as e:
-        logging.error(f"Error in external command handler: {e}")
+        logger.error(f"Error in external command handler: {e}")
+        writer.write(b"ERROR")
 
 
 async def main():
-    logging.info("Native Host Started")
+    logger.info("Native Host Started")
 
     bridge = NativeBridge()
-    brain_logic = Logic(bridge)
+    orchestrator = Orchestrator(bridge)
 
-    # Start the External Command Server (TCP)
     server = None
     try:
         server = await asyncio.start_server(handle_external_command, "127.0.0.1", 9999)
-        logging.info("External Command Server listening on 127.0.0.1:9999")
+        logger.info("External Command Server listening on 127.0.0.1:9999")
         asyncio.create_task(server.serve_forever())
     except OSError as e:
-        if e.errno == 98:  # Address already in use
-            logging.error(
-                "Port 9999 is busy. External triggers will be disabled for this instance."
-            )
+        if e.errno == 98:
+            logger.error("Port 9999 is busy. External triggers disabled.")
         else:
-            logging.error(f"Failed to start external server: {e}")
+            logger.error(f"Failed to start external server: {e}")
 
-    logging.info("Waiting for triggers from browser or terminal...")
+    logger.info("Waiting for triggers from browser or terminal...")
 
     while bridge.running:
-        # Check for incoming messages (from Browser OR External Server)
         msg = bridge.get_incoming_message(block=False)
 
         if msg:
             action = msg.get("action")
-            logging.info(f"Received trigger: {action}")
+            logger.info(f"Received trigger: {action}")
 
-            if action == "start_search":
-                query = msg.get("query", "Stealth Automation")
-                logging.info(f"Starting DuckDuckGo Search for: {query}")
-                # Run the task
-                await brain_logic.search_duckduckgo(query)
-                logging.info("Search task finished.")
+            if action in ["start_search", "start_task"]:
+                result = await orchestrator.dispatch(msg)
+                logger.info(f"Task result: {result.get('status')}")
+
+            elif action == "list_platforms":
+                result = await orchestrator.list_platforms()
+                logger.info(f"Available platforms: {result}")
 
             elif action == "ping":
-                logging.info("Ping received.")
+                logger.info("Ping received.")
+
+            else:
+                logger.warning(f"Unknown action: {action}")
 
         await asyncio.sleep(0.1)
 
 
 if __name__ == "__main__":
+    # Set up signal handlers
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+
+    # Ensure single instance
+    # ensure_single_instance()  # Commented out to allow multiple instances
+
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        pass
+        logger.info("Shutting down...")
     except Exception as e:
-        logging.critical(f"Main crashed: {e}")
+        logger.critical(f"Main crashed: {e}")
+    finally:
+        # cleanup_pid_file()  # Commented out since we're not using PID file
+        pass
