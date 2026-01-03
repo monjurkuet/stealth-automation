@@ -1,12 +1,10 @@
-import asyncio
 import logging
 from typing import Dict
-from src.bridge.native import NativeBridge
-from src.brain.factory import AutomationFactory
-from src.common.config import OUTPUT_DIR
 
 # Import tasks to register them in the factory
-import src.brain.tasks
+import src.brain.tasks  # noqa: F401
+from src.brain.factory import AutomationFactory
+from src.bridge.native import NativeBridge
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +34,6 @@ class Orchestrator:
         Returns:
             Standardized result from task
         """
-        action = message.get("action")
         platform = message.get("platform")
         query = message.get("query")
 
@@ -82,23 +79,7 @@ class Orchestrator:
         for platform in platforms:
             try:
                 platform_info[platform] = self.factory.get_platform_info(platform)
-            except:
-                platform_info[platform] = {"error": "Failed to load info"}
+            except Exception as e:
+                platform_info[platform] = {f"error:{e}"}
 
         return {"status": "success", "platforms": platform_info}
-
-
-class Logic:
-    """
-    Deprecated: Use Orchestrator instead.
-    Kept for backward compatibility.
-    """
-
-    def __init__(self, bridge: NativeBridge):
-        self.bridge = bridge
-        self.orchestrator = Orchestrator(bridge)
-
-    async def search_duckduckgo(self, query: str):
-        """Backward compatible method."""
-        message = {"action": "start_search", "platform": "duckduckgo", "query": query}
-        return await self.orchestrator.dispatch(message)
