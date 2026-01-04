@@ -160,6 +160,12 @@ async function handleCommand(command) {
                 result = { id: command.id, status: 'success', data: results };
                 break;
                 
+            case 'scroll_to_bottom':
+                console.log("Hands: Scrolling to bottom");
+                window.scrollTo(0, document.body.scrollHeight);
+                result = { id: command.id, status: 'success', message: 'Scrolled to bottom' };
+                break;
+
             default:
                 result = { id: command.id, status: 'error', message: `Unknown command: ${command.action}`};
         }

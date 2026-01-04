@@ -1,7 +1,6 @@
 import logging
 from typing import Dict, Type
 from src.brain.base import BaseAutomation
-from src.brain.utils.validation import validate_config
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +57,9 @@ class AutomationFactory:
                 "task_class": cls._tasks[platform].__name__,
                 "iteration_type": config["settings"]["iteration"]["type"],
                 "requires_auth": config.get("auth", {}).get("required", False),
+                "task_execution_s": config["settings"]["timeouts"].get(
+                    "task_execution_s", 120
+                ),
             }
 
         return {

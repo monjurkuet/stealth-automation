@@ -32,6 +32,7 @@ settings:
     type: pagination
     max_pages: 5
     max_items: 50
+    scroll_before_next_page: true
   rate_limiting:
     action_delay_ms: 500
     page_load_delay_ms: 2000
@@ -39,13 +40,17 @@ settings:
     max_actions_per_minute: 30
   output:
     file: "output/results/yourplatform_results.jsonl"
+timeouts:
+  browser_action_s: 30
+  task_execution_s: 300
 ```
 
 **Key Fields:**
 - `platform`: Unique identifier (lowercase, no spaces)
 - `base_url`: Starting URL
 - `selectors`: CSS selectors for elements
-- `settings`: Iteration and rate limiting
+- `settings`: Iteration, rate limiting, and pagination options (e.g., `scroll_before_next_page`)
+- `timeouts`: Browser action timeout (`browser_action_s`) and overall task execution timeout (`task_execution_s`)
 
 ### 2. Create Task Class
 
@@ -307,6 +312,8 @@ async def execute(self, query: str, **kwargs) -> Dict:
 
 **Timeout errors:**
 - Increase `page_load_delay_ms` in config
+- Adjust `timeouts.browser_action_s` for individual browser operations (default 30s)
+- Increase `timeouts.task_execution_s` for overall task timeout (default 300s)
 - Check if site requires login
 
 **Rate limiting:**

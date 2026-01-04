@@ -6,8 +6,10 @@ A 100% stealth browser automation framework using Chrome Native Messaging for co
 
 - **Undetectable:** Uses Chrome Native Messaging, bypassing Content Security Policy (CSP) and avoiding network-based detection common in traditional bots.
 - **Architecture:** "Brain-Bridge-Hands" model separating logic (Python) from execution (Browser Extension).
-- **Flexible:** Supports DuckDuckGo search automation with result extraction (Title, Link, Details).
-- **Portable:** Includes a monolithic archive script for easy deployment.
+- **Multi-Platform:** Supports multiple search platforms including DuckDuckGo, with extensible task system for adding new platforms.
+- **Advanced Automation:** Configurable timeouts, rate limiting, pagination strategies (including scroll-before-click), and result extraction.
+- **Flexible Output:** Saves results in JSONL format with progress tracking and error handling.
+- **CLI Interface:** Command-line tool supporting multiple platforms and configuration options.
 
 ## Architecture
 
@@ -25,6 +27,21 @@ A 100% stealth browser automation framework using Chrome Native Messaging for co
 ```bash
 git clone https://github.com/monjurkuet/stealth-automation.git
 cd stealth-automation
+```
+
+### 2. Install Dependencies
+
+Using uv (recommended):
+```bash
+pip install uv
+uv venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
+```
+
+Or using pip:
+```bash
+pip install -r requirements.txt
 ```
 
 ### 2. Chrome Extension Setup
@@ -70,35 +87,31 @@ Once installed, the automation starts automatically when you open Chrome.
     python3 main_native.py
     ```
 
-2.  **Triggering a Search:**
+2.  **Triggering Automation:**
 
     *   **Method 1: Browser Popup**
         *   Click the Stealth Automation icon in your toolbar.
+        *   Select platform (e.g., "DuckDuckGo").
         *   Enter your query (e.g., "Best stealth automation tools").
-        *   Click "Start Search".
+        *   Click "Start".
         *   The browser will navigate, type, wait, and extract results.
 
     *   **Method 2: Python Trigger Script**
         *   Use the provided `trigger.py`:
         ```bash
-        python3 trigger.py "Your Search Query"
+        python3 trigger.py duckduckgo "Your Search Query"
+        # List available platforms
+        python3 trigger.py list
         ```
 
 ### Viewing Results
 
-Search results are automatically saved to `search_results.json` in the project directory.
+Search results are automatically saved to JSONL files in `output/results/` (e.g., `duckduckgo_results.jsonl`).
 
-**Output Format:**
-```json
-[
-  {
-    "rank": 1,
-    "title": "Example Title",
-    "link": "https://example.com/article",
-    "details": "Example snippet text..."
-  },
-  ...
-]
+**Output Format (JSONL):**
+```jsonl
+{"status": "item", "platform": "duckduckgo", "timestamp": "2026-01-03T12:00:00Z", "data": {"rank": 1, "title": "Example Title", "link": "https://example.com/article", "snippet": "Example snippet text..."}}
+{"status": "summary", "platform": "duckduckgo", "timestamp": "2026-01-03T12:00:05Z", "data": {"total_items": 10, "pages_processed": 2, "duration_ms": 5000}}
 ```
 
 You can also view execution logs in `native_host.log`.

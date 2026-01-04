@@ -12,13 +12,14 @@ sys.path.insert(0, os.getcwd())
 
 from src.brain.main import Orchestrator
 from src.bridge.native import NativeBridge
+from src.brain.factory import AutomationFactory  # ADDED
 from src.common.logging_config import setup_logging
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
 # Configuration
-COMMAND_TIMEOUT = 30  # seconds
+# COMMAND_TIMEOUT is now configured per task, removed global variable
 
 
 def kill_existing_instances():
@@ -173,10 +174,30 @@ async def main():
             action = msg.get("action")
             logger.info(f"→ Received trigger: {action}")
 
+            # Initialize with a default timeout before any potential use
+            current_task_timeout = (
+                90  # Default fallback if platform config fails or action is not a task
+            )
+
             try:
                 if action in ["start_search", "start_task"]:
+                    platform = msg.get("platform")
+                    if platform:
+                        try:
+                            platform_info = AutomationFactory.get_platform_info(
+                                platform
+                            )
+                            current_task_timeout = platform_info.get(
+                                "task_execution_s", 90
+                            )
+                        except ValueError as e:
+                            logger.warning(
+                                f"Could not get platform info for {platform}: {e}. Using default timeout."
+                            )
+
+                    # Execute task with configurable timeout
                     result = await asyncio.wait_for(
-                        orchestrator.dispatch(msg), timeout=COMMAND_TIMEOUT
+                        orchestrator.dispatch(msg), timeout=current_task_timeout
                     )
                     status = result.get("status", "unknown")
                     logger.info(f"✓ Task completed: {status}")
@@ -193,7 +214,8 @@ async def main():
                     logger.warning(f"✗ Unknown action: {action}")
 
             except asyncio.TimeoutError:
-                logger.error(f"✗ Task timed out after {COMMAND_TIMEOUT}s")
+                # current_task_timeout is guaranteed to be bound here
+                logger.error(f"✗ Task timed out after {current_task_timeout}s")
             except Exception as e:
                 logger.error(f"✗ Task failed: {e}", exc_info=True)
 

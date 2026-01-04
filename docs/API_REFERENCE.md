@@ -37,7 +37,7 @@ Factory for creating task instances.
 - Return list of registered platform names
 
 **`@classmethod get_platform_info(platform: str) -> Dict`**
-- Get detailed info about a platform
+- Get detailed info about a platform, including iteration type, auth requirements, and task execution timeout.
 - Returns: Platform info dict
 
 ### BaseAutomation
@@ -120,7 +120,7 @@ Singleton bridge for Native Messaging communication.
 - Returns: Command ID for matching results
 
 **`get_result(command_id: int, timeout: int = 30) -> Dict`**
-- Wait for result by command ID
+- Wait for result by command ID. The timeout can be configured per task via 'browser_action_s' in the task's config.
 - Returns: Result dict or error on timeout
 
 **`get_incoming_message(block: bool = True, timeout: Optional[int] = None) -> Optional[Dict]`**

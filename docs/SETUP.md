@@ -150,17 +150,29 @@ platform: duckduckgo
 base_url: "https://duckduckgo.com/"
 selectors:
   search_input: "input#searchbox_input"
+  search_button: "button[type='submit']"
   results_container: "ol.react-results--main"
   result_item: "article[data-testid='result']"
+  result_title: "h2 a[data-testid='result-title-a']"
+  result_link: "h2 a[data-testid='result-title-a']"
+  result_snippet: "div[data-result='snippet']"
+  next_page_button: "button#more-results"
 settings:
   iteration:
     type: pagination
     max_pages: 5
     max_items: 50
+    scroll_before_next_page: true
   rate_limiting:
     action_delay_ms: 500
     page_load_delay_ms: 2000
     randomize_delay: true
+    max_actions_per_minute: 30
+  output:
+    file: "output/results/duckduckgo_results.jsonl"
+timeouts:
+  browser_action_s: 30
+  task_execution_s: 300
 ```
 
 ### Rate Limiting

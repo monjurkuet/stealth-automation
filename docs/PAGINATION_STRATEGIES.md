@@ -17,7 +17,7 @@ Stealth Automation supports three iteration strategies for collecting results:
 | URL Changes | Yes (navigation) | No (same page) | Yes (navigation) |
 | Memory Usage | Low | Medium | High (queue) |
 | Duplicate Risk | Low | Low | High (same domain) |
-| Config Fields | `max_pages` | `scroll_delay_ms` | `max_depth`, `same_domain_only` |
+| Config Fields | `max_pages`, `scroll_before_next_page` | `scroll_delay_ms` | `max_depth`, `same_domain_only` |
 
 ## Pagination
 
@@ -38,6 +38,7 @@ settings:
     type: pagination
     max_pages: 5          # Max pages to visit
     max_items: 50         # Max items to collect
+    scroll_before_next_page: true  # Scroll to bottom before clicking next page (useful for "load more" buttons)
 ```
 
 ### When to Use

@@ -37,7 +37,6 @@ import os
 import asyncio
 import logging
 import threading
-import socket
 import json
 import struct
 import queue

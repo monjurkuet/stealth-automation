@@ -20,7 +20,7 @@ Stealth Automation is a browser automation framework using Chrome Native Messagi
 │                     main_native.py                              │
 │              (Native Host Entry Point)                          │
 │  - TCP Server for external triggers                           │
-│  - Message routing                                           │
+│  - Message routing & Configurable Task Timeouts                                           │
 └──────────────────────┬──────────────────────────────────────────┘
                        │
                        ▼
@@ -79,7 +79,6 @@ Stealth Automation is a browser automation framework using Chrome Native Messagi
 │  │             │          │   (Hands)   │                │
 │  └─────────────┘          └─────────────┘                │
 └─────────────────────────────────────────────────────────────────┘
-```
 
 ## Components
 
@@ -96,18 +95,16 @@ Stealth Automation is a browser automation framework using Chrome Native Messagi
 **Task Factory:** `src/brain/factory.py`
 - Explicit task registration
 - Creates task instances
-- Lists available platforms
+- Lists available platforms and their detailed configuration, including 'task_execution_s'.
 
 **Base Automation:** `src/brain/base.py`
 - Abstract base class for all tasks
-- Common iteration strategies:
-  - `pagination`: Page 1, 2, 3...
-  - `infinite_scroll`: Load until end
-  - `depth`: Visit all linked pages
+- Common iteration strategies (pagination now supports pre-click scroll for 'load more')
 - Retry logic with exponential backoff
 - Rate limiting with configurable delays
 - Progress event emission
 - JSONL result storage
+- Browser action timeouts are configurable via task settings ('browser_action_s')
 
 **Platform Tasks:** `src/brain/tasks/*.py`
 - `DuckDuckGoTask`: DuckDuckGo search automation
@@ -130,7 +127,7 @@ Stealth Automation is a browser automation framework using Chrome Native Messagi
 
 **Content Script:** `extension/content.js`
 - Executes DOM manipulations
-- Handles commands: navigate, type, click, wait, scroll, extract
+- Handles commands: navigate, type, click, wait, scroll (now fully implemented), extract
 - Shows status overlay for visual feedback
 
 **Popup:** `extension/popup.html/js`
@@ -160,10 +157,11 @@ Stealth Automation is a browser automation framework using Chrome Native Messagi
 ### 5. Configuration
 
 **Platform Configs:** `config/*.yaml`
-- YAML files per platform
-- CSS selectors
-- Iteration settings
-- Rate limiting settings
+- YAML files per platform defining:
+  - CSS selectors
+  - Iteration settings (e.g., pagination type, max pages/items, scroll-before-next-page)
+  - Rate limiting settings (e.g., delays, randomization)
+  - Timeout settings (e.g., browser_action_s for individual commands, task_execution_s for overall task)
 
 **Schema:** `config/schema.json`
 - JSON Schema for validation

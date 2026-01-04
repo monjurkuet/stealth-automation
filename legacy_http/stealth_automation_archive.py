@@ -12,8 +12,6 @@ Usage:
 2. Run this script: python3 stealth_automation_archive.py
 """
 
-import sys
-import os
 import http.server
 import socketserver
 import json

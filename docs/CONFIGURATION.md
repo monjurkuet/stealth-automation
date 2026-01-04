@@ -26,12 +26,16 @@ settings:
     max_depth: <number>
     scroll_delay_ms: <number>
     same_domain_only: <boolean>
+    scroll_before_next_page: <boolean> # NEW
   rate_limiting:
     action_delay_ms: <number>
     page_load_delay_ms: <number>
     scroll_delay_ms: <number>
     randomize_delay: <boolean>
     max_actions_per_minute: <number>
+  timeouts: # NEW SECTION
+    browser_action_s: <number> # NEW
+    task_execution_s: <number> # NEW
   output:
     file: <output_path>
 auth:
@@ -128,6 +132,11 @@ iteration:
 - Description: Delay between scrolls in milliseconds
 - Default: 1000
 
+### scroll_before_next_page (pagination only)
+- Type: boolean
+- Description: If true, the page will scroll to the bottom before clicking the next page/load more button. Useful for dynamically loading content.
+- Default: false
+
 ### same_domain_only (depth only)
 - Type: boolean
 - Description: Only follow links from same domain
@@ -170,6 +179,18 @@ iteration:
 Note: Actual files will have timestamps appended:
 - `duckduckgo_20260103_120000.jsonl`
 
+## Timeout Settings
+
+### browser_action_s
+- Type: integer (minimum: 1)
+- Description: Timeout in seconds for individual browser commands (e.g., click, type, navigate, wait for selector). Overrides NativeBridge's default 30s.
+- Default: 30
+
+### task_execution_s
+- Type: integer (minimum: 1)
+- Description: Overall timeout in seconds for the entire task execution in main_native.py.
+- Default: 90
+
 ## Authentication Settings (Optional)
 
 ### required
@@ -201,12 +222,16 @@ settings:
     type: pagination
     max_pages: 10
     max_items: 100
+    scroll_before_next_page: true # ADDED
   rate_limiting:
     action_delay_ms: 800
     page_load_delay_ms: 3000
     scroll_delay_ms: 1500
     randomize_delay: true
     max_actions_per_minute: 20
+  timeouts: # ADDED
+    browser_action_s: 60
+    task_execution_s: 180
   output:
     file: "output/results/example_site_results.jsonl"
 auth:
@@ -285,5 +310,5 @@ ValidationError: 'selectors' is a required property
 TimeoutError: Timeout waiting for results: div.results
 ```
 - Selector may be incorrect
-- Page may not have loaded (increase `page_load_delay_ms`)
+- Page may not have loaded (increase `page_load_delay_ms` or `browser_action_s` timeout)
 - Dynamic content may require different approach

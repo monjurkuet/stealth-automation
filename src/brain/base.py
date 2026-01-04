@@ -114,6 +114,19 @@ class BaseAutomation(ABC):
             if not await self._click_next_page():
                 break
 
+            # NEW: Conditional scroll before next page click
+            if self.config["settings"]["iteration"].get(
+                "scroll_before_next_page", False
+            ):
+                scroll_delay = (
+                    self.config["settings"]["rate_limiting"].get(
+                        "scroll_delay_ms", 1000
+                    )
+                    / 1000
+                )
+                await self._scroll_to_bottom()
+                await asyncio.sleep(scroll_delay)
+
             self.pages_processed += 1
             await self._with_rate_limit()
 
@@ -262,7 +275,10 @@ class BaseAutomation(ABC):
             {"action": "wait_for_selector", "selector": selector, "timeout": 10000}
         )
 
-        result = self.bridge.get_result(wait_id)
+        result = self.bridge.get_result(
+            wait_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") != "success":
             raise TimeoutError(f"Timeout waiting for results: {selector}")
 
@@ -270,7 +286,10 @@ class BaseAutomation(ABC):
         """Navigate to URL."""
         navigate_id = self.bridge.send_command({"action": "navigate", "url": url})
 
-        result = self.bridge.get_result(navigate_id)
+        result = self.bridge.get_result(
+            navigate_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") != "success":
             raise Exception(f"Navigation failed: {url}")
 
@@ -288,7 +307,10 @@ class BaseAutomation(ABC):
             {"action": "type", "selector": selector, "value": value}
         )
 
-        result = self.bridge.get_result(type_id)
+        result = self.bridge.get_result(
+            type_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") != "success":
             raise Exception(f"Typing failed: {selector}")
 
@@ -298,7 +320,10 @@ class BaseAutomation(ABC):
         """Click element."""
         click_id = self.bridge.send_command({"action": "click", "selector": selector})
 
-        result = self.bridge.get_result(click_id)
+        result = self.bridge.get_result(
+            click_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") != "success":
             raise Exception(f"Click failed: {selector}")
 
@@ -312,7 +337,10 @@ class BaseAutomation(ABC):
         """Extract items from current page."""
         extract_id = self.bridge.send_command({"action": "extract_search_results"})
 
-        result = self.bridge.get_result(extract_id)
+        result = self.bridge.get_result(
+            extract_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") == "success":
             data = result.get("data", [])
             if isinstance(data, list):
@@ -325,7 +353,10 @@ class BaseAutomation(ABC):
             {"action": "extract_urls", "selector": "a[href]"}
         )
 
-        result = self.bridge.get_result(extract_id)
+        result = self.bridge.get_result(
+            extract_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") == "success":
             data = result.get("data", [])
             if isinstance(data, list):
@@ -342,7 +373,10 @@ class BaseAutomation(ABC):
             {"action": "wait_for_selector", "selector": selector, "timeout": 2000}
         )
 
-        result = self.bridge.get_result(check_id)
+        result = self.bridge.get_result(
+            check_id,
+            timeout=self.config["settings"]["timeouts"].get("browser_action_s", 30),
+        )
         if result.get("status") != "success":
             return False
 

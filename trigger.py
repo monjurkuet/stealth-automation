@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import socket
 import sys
-from typing import Optional
 
 
 def send_trigger(platform: str, query: str):

@@ -6,7 +6,6 @@ sys.path.insert(0, os.getcwd())
 
 import asyncio
 from src.bridge.server import HttpBridge
-import json  # Will need this for sending/receiving command data
 
 # main.py for the Python "Brain" component
 # This module will handle Logic, Coordinate Calculation, and Bezier Paths.
