@@ -1,0 +1,6 @@
+TCP_HOST = "127.0.0.1"
+TCP_PORT = 9999
+DEFAULT_TIMEOUT = 30
+POLL_INTERVAL = 0.1
+OUTPUT_DIR = "output/results"
+LOG_FILE = "native_host.log"

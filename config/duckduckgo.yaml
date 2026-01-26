@@ -1,0 +1,28 @@
+platform: duckduckgo
+base_url: "https://duckduckgo.com/"
+selectors:
+  search_input: "input#searchbox_input"
+  search_button: "button[type='submit']"
+  results_container: "ol.react-results--main"
+  result_item: "article[data-testid='result']"
+  result_title: "h2 a span"
+  result_link: "h2 a"
+  result_snippet: "div[data-result='snippet']"
+  next_page_button: "button#more-results"
+settings:
+  iteration:
+    type: pagination
+    max_pages: 5
+    max_items: 500
+    scroll_before_next_page: true
+  rate_limiting:
+    action_delay_ms: 5000
+    page_load_delay_ms: 2000
+    scroll_delay_ms: 3000
+    randomize_delay: true
+    max_actions_per_minute: 30
+  timeouts: # NEW SECTION
+    browser_action_s: 60
+    task_execution_s: 180 # Overall task execution timeout in seconds # Default 60 seconds, can be adjusted
+  output:
+    file: "output/results/duckduckgo_results.jsonl"

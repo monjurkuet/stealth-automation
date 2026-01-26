@@ -1,0 +1,44 @@
+# Logs
+*.log
+native_host.log
+server.log
+server_new.log
+
+# JSON Lines files
+output/results/*.jsonl
+
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Optional: Python cache / tooling
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.lock
+
+# Optional: virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+extract_current.py
+get_html.py
+simple_extract.py
+test_extract.py
